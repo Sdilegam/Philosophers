@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 11:25:36 by sdi-lega          #+#    #+#              #
-#    Updated: 2022/04/25 15:47:53 by sdi-lega         ###   ########.fr        #
+#    Updated: 2022/07/16 15:57:34 by sdi-lega         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@
 #																			   #
 ################################################################################
 
-NAME				=	#Name of project.
+NAME				=	philo_bonus#Name of project.
 
 #####################################
 #									#
@@ -25,19 +25,12 @@ NAME				=	#Name of project.
 #####################################
 
 #Common#
-COMN_DIR			=	sources/common/
-COMN_OBJ_DIR		=	${COMMON_DIR}objects/
+DIR					=	sources/
+OBJ_DIR				=	${DIR}objects/
 
-#Mandatory#
-MANDA_DIR			=	sources/mandatory/
-MANDA_OBJ_DIR		=	${MANDATORY_DIR}objects/
-
-#Bonus#
-BONUS_DIR			=	sources/bonus/
-BONUS_OBJ_DIR		=	${BONUS_DIR}objects/
 
 #Other#
-LIB_DIR		=	libraries/
+LIB_DIR				=	libraries/
 
 #####################################
 #									#
@@ -46,26 +39,12 @@ LIB_DIR		=	libraries/
 #####################################
 
 #Common#
-COMN_SRCS			=	\
+SRCS				=	main_philo.c\
 
-COMN_OBJS			=	${addprefix ${COMN_OBJ_DIR}, ${COMN_SOURCES:.c=.o}}
-COMN_LIBS			=	#Libs for comon sources
+OBJS				=	${addprefix ${OBJ_DIR}, ${SRCS:.c=.o}}
 
-#Mandatory#
-MANDA_SRCS			=	\
-
-MANDA_OBJS			=	${addprefix ${MANDA_OBJ_DIR}, ${MANDA_SOURCES:.c=.o}}
-MANDA_LIBS			=	${COMN_LIBS}#Libs for mandatory sources
-
-#Bonus#
-BONUS_SRCS			=	\
-
-BONUS_OBJS			=	${addprefix ${BONUS_OBJ_DIR}, ${BONUS_SRCS:.c=.o}}
-BONUS_LIBS			=	${COMN_LIBS}#Libs for bonus sources
-
-ALL_LIBS			=	${COMN_LIBS} ${MANDA_LIBS} ${BONUS_LIBS}
-DEPENDS				=	${OBJECTS:.o=.d} ${BONUS_OBJECTS:.o=.d} ${COMN_OBJECTS:.o=.d}
-EXECUTABLES			=	${NAME} ${NAME}_bonus #Modify if other executables needed#
+DEPENDS				=	${OBJS:.o=.d}
+EXECUTABLES			=	${NAME} #Modify if other executables needed#
 
 #####################################
 #									#
@@ -73,12 +52,10 @@ EXECUTABLES			=	${NAME} ${NAME}_bonus #Modify if other executables needed#
 #									#
 #####################################
 
-CC					=	gcc
-COMN_INCLUDE		=	-Iincludes -I${COMN_DIR}headers/ ${addprefix -I, ${addprefix ${LIB_DIR},${dir ${COMN_LIBS}}}}
-MANDA_INCLUDE		=	-I${MANDA_DIR}headers/ ${addprefix -I, ${addprefix ${LIB_DIR},${dir ${MANDA_LIBS}}}}                                                         
-BONUS_INCLUDE		=	-I${BONUS_DIR}headers/ ${addprefix -I, ${addprefix ${LIB_DIR},${dir ${BONUS_LIBS}}}}
+CC					=	cc
+INCLUDE				=	-Iincludes -I${DIR}headers/
 
-CC_FLAGS			=	${COMN_INCLUDE} -MMD -Wall -Werror -Wextra
+CC_FLAGS			=	${INCLUDE} -MMD -Wall -Werror -Wextra
 RM					=	rm -f
 SLEEP_TIME			=	0.2
 SILENT				=	@
@@ -95,11 +72,10 @@ SILENT				=	@
 #									#
 #####################################
 
-all:				mandatory #bonus
+all:				mandatory 
 re:					fclean all
 
 mandatory:			${NAME}
-bonus:				${NAME}_bonus
 
 #####################################
 #									#
@@ -108,39 +84,17 @@ bonus:				${NAME}_bonus
 #####################################
 
 #OBJECTS#
-${COMN_OBJ_DIR}%.o:	${addprefix ${COMN_DIR}, %.c}
+${OBJ_DIR}%.o:		${DIR}%.c
 			@ echo  "\rCreating common \"${@F:.c=.o}\" object file.\033[K\c"
-			${SILENT} ${CC} ${CC_FLAGS} ${COMN_INCLUDE} -c $< -o ${COMN_OBJ_DIR}${@F:.c=.o}
+			${SILENT} ${CC} ${CC_FLAGS} -c $< -o $@
 			@ sleep ${SLEEP_TIME}
-			
-${MANDA_OBJ_DIR}%.o:	${addprefix ${MANDA_DIR}, %.c}
-			@ echo  "\rCreating mandatory \"${@F:.c=.o}\" object file.\033[K\c"
-			${SILENT} ${CC} ${CC_FLAGS} ${MANDA_INCLUDE} -c $< -o ${MANDA_OBJ_DIR}${@F:.c=.o}
-			@ sleep ${SLEEP_TIME}
-			
-${BONUS_OBJ_DIR}%.o:	${addprefix ${BONUS_DIR}, %.c}
-			@ echo  "\rCreating bonus \"${@F:.c=.o}\" object file.\033[K\c"
-			${SILENT} ${CC} ${CC_FLAGS} ${BONUS_INCLUDE} -c $< -o ${BONUS_OBJ_DIR}${@F:.c=.o}
-			@ sleep ${SLEEP_TIME}
-			
-#LIBS#	
-${addprefix ${LIB_DIR}, ${ALL_LIBS}}:		
-			@ echo  "\rCreating \"${notdir $@}\".\033[K\c"
-			${SILENT} make -sC $(@D)
-			@ echo "\rLibrary \"${notdir $@}\" created\033[K"
 
 #EXECUTABLES#
-${NAME}:				${OBJECTS_DIR} ${addprefix ${LIB_DIR}, ${MANDA_LIBS}} ${COMN_OBJS} ${MANDA_OBJS}
+${NAME}:				${OBJS_DIR} ${OBJS}
 			@ echo "\r\"$@\" executable created\033[K"
-			${SILENT} ${CC} ${addprefix -L, ${addprefix ${LIB_DIR},${dir ${MANDA_LIBS}}}} ${addprefix -l, ${patsubst lib%.a, %, ${notdir ${MANDA_LIBS}}}} ${COMN_OBJS} ${MANDA_OBJS} -o $@
-			@ sleep ${SLEEP_TIME}
-			
-${NAME}_bonus:			${BONUS_OBJECTS_DIR} ${addprefix ${LIB_DIR}, $b}}${COMN_OBJS} ${BONUS_OBJS}
-			@ echo "\r\"$@\" executable created\033[K"
-			${SILENT} ${CC} ${addprefix -L, ${addprefix ${LIB_DIR},${dir ${BONUS_LIBS}}}} ${addprefix -l, ${patsubst lib%.a, %, ${notdir ${BONUS_LIBS}}}} ${COMN_OBJS} ${BONUS_OBJS} -o $@
+			${SILENT} ${CC} ${OBJS} -o $@
 			@ sleep ${SLEEP_TIME}
 
-			
 -include ${DEPENDS}
 
 #####################################
@@ -150,8 +104,8 @@ ${NAME}_bonus:			${BONUS_OBJECTS_DIR} ${addprefix ${LIB_DIR}, $b}}${COMN_OBJS} $
 #####################################
 
 clean:
-			@ echo "\rRemoving objects files (${notdir ${COMN_OBJS}} ${notdir ${MANDA_OBJS}}).\033[K\c"
-			${SILENT} ${RM} ${OBJECTS} ${COMN_OBJS} ${DEPENDS}
+			@ echo "\rRemoving objects files (${notdir ${OBJS}} ${notdir ${MANDA_OBJS}}).\033[K\c"
+			${SILENT} ${RM} ${OBJECTS} ${OBJS} ${DEPENDS}
 			@ sleep ${SLEEP_TIME}
 
 clean_bonus:
@@ -179,18 +133,11 @@ fclean:			clean ${addprefix clean_,${dir ${ALL_LIBS}}} clean_exe clean_bonus
 #####################################
 
 ${OBJECTS_DIR}:
-			mkdir ${OBJECTS_DIR}
-${BONUS_OBJECTS_DIR}:
-			mkdir ${BONUS_OBJECTS_DIR}
+			mkdir ${OBJS_DIR}
 
 start:				
-			${SILENT} mkdir -p sources/common/objects
-			${SILENT} mkdir -p sources/common/headers
-			${SILENT} mkdir -p sources/mandatory/objects
-			${SILENT} mkdir -p sources/mandatory/headers
-			${SILENT} mkdir -p sources/bonus/objects
-			${SILENT} mkdir -p sources/bonus/headers
-			${SILENT} mkdir -p libraries
-
+			${SILENT} mkdir -p sources/objects
+			${SILENT} mkdir -p sources/headers
+			
 .phony: 	fclean clean clean_bonus clean_libs clean_exe start all mandatory bonus re 
 
