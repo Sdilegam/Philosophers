@@ -6,12 +6,13 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 15:54:50 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/07/18 04:02:04 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/07/18 10:22:16 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main_philo.h"
-#include "unistd.h"
+#include <unistd.h>
+#include <pthread.h>
 
 int	main(int argc, char **argv)
 {
