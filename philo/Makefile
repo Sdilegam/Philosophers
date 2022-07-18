@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 11:25:36 by sdi-lega          #+#    #+#              #
-#    Updated: 2022/07/18 04:24:34 by sdi-lega         ###   ########.fr        #
+#    Updated: 2022/07/18 12:01:42 by sdi-lega         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,7 @@ sources/headers/%.h:		${DIR}%.c
 			@ sleep ${SLEEP_TIME}
 
 #EXECUTABLES#
-${NAME}:				${OBJS_DIR} headers ${OBJS}
+${NAME}:				${OBJS_DIR} ${OBJS}
 			@ echo "\r\"$@\" executable created\033[K"
 			${SILENT} ${CC} ${OBJS} -o $@
 			@ sleep ${SLEEP_TIME}
@@ -106,10 +106,14 @@ ${NAME}:				${OBJS_DIR} headers ${OBJS}
 # ./a.out $(find srcs -name "*.c" | sed 's/srcs\///' | awk 'BEGIN {FS="."}{print "srcs/" $1 ".c:includes/"$1".h"}')
 
 headers:
-			../Makeheaders $(shell find ${DIR} -name "*.c" | sed 's/${DIR:/=\/}//' | awk 'BEGIN {FS="."}{print "${DIR}"$$1".c:${DIR}headers/"$$1".h"}')
+			../Makeheaders $(shell find ${DIR} -name "*.c" | sed 's/${DIR:/=\/}//' | awk 'BEGIN {FS="."}{print "${DIR:/=}"$$1".c:${DIR}headers"$$1".h"}')
 
 
 -include ${DEPENDS}
+
+debug: CC_FLAGS += -g
+debug: re
+
 
 #####################################
 #									#
