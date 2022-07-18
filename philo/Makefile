@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/25 11:25:36 by sdi-lega          #+#    #+#              #
-#    Updated: 2022/07/18 12:01:42 by sdi-lega         ###   ########.fr        #
+#    Updated: 2022/07/18 13:38:17 by sdi-lega         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,7 +98,7 @@ sources/headers/%.h:		${DIR}%.c
 			@ sleep ${SLEEP_TIME}
 
 #EXECUTABLES#
-${NAME}:				${OBJS_DIR} ${OBJS}
+${NAME}:				${OBJS_DIR} headers ${OBJS}
 			@ echo "\r\"$@\" executable created\033[K"
 			${SILENT} ${CC} ${OBJS} -o $@
 			@ sleep ${SLEEP_TIME}
@@ -114,6 +114,8 @@ headers:
 debug: CC_FLAGS += -g
 debug: re
 
+format:
+		$SRCS
 
 #####################################
 #									#
