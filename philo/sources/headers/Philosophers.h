@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+      */
 /*                                                     +#+          +#+       */
 /*   Created: 2022/07/18 13:00:13 by sdi-lega         #+#  #+#+#+#+#+#        */
-/*   Updated: 2022/07/19 17:57:22 by sdi-lega        ###                      */
+/*   Updated: 2022/07/19 18:20:27 by sdi-lega        ###                      */
 /*                                                                            */
 /******************************************************************************/
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
+#include <sys/time.h>
 
 typedef pthread_mutex_t	t_mutex;
 

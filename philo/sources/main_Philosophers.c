@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+      */
 /*                                                     +#+          +#+       */
 /*   Created: 2022/07/19 12:28:24 by sdi-lega         #+#  #+#+#+#+#+#        */
-/*   Updated: 2022/07/19 18:02:50 by sdi-lega        ###                      */
+/*   Updated: 2022/07/19 18:26:58 by sdi-lega        ###                      */
 /*                                                                            */
 /******************************************************************************/
 
@@ -18,10 +18,12 @@ void	*routine(void *bridge)
 	t_philo	*philo;
 
 	philo = bridge;
+	struct timeval tp;
+	gettimeofday(&tp, 0);
 	pthread_mutex_lock(&(philo->forks[0]));
 	pthread_mutex_lock(&(philo->forks[1]));
 	pthread_mutex_lock(&philo->params->print);
-	printf("%d mange\n", philo->id);
+	printf("%d, %ld mange\n", tp.tv_usec, tp.tv_sec);
 	printf("Fini\n");
 	pthread_mutex_unlock(&philo->params->print);
 	pthread_mutex_unlock(&(philo->forks[1]));
