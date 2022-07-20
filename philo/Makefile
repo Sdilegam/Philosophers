@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+       #
 #                                                      +#+          +#+        #
 #    Created: 2022/07/19 12:28:37 by sdi-lega         #+#  #+#+#+#+#+#         #
-#    Updated: 2022/07/19 17:09:56 by sdi-lega        ###                       #
+#    Updated: 2022/07/20 14:28:13 by sdi-lega        ###                       #
 #                                                                              #
 #******************************************************************************#
 
@@ -43,6 +43,7 @@ SRCS				=	main_Philosophers.c\
 						ft_atoi.c\
 						ft_itoa.c\
 						philosophers_list.c\
+						time_handling.c\
 						test.c\
 
 OBJS				=	${addprefix ${OBJ_DIR}, ${SRCS:.c=.o}}
