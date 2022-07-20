@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+      */
 /*                                                     +#+          +#+       */
 /*   Created: 2022/07/19 12:28:24 by sdi-lega         #+#  #+#+#+#+#+#        */
-/*   Updated: 2022/07/20 16:50:31 by sdi-lega        ###                      */
+/*   Updated: 2022/07/20 17:09:04 by sdi-lega        ###                      */
 /*                                                                            */
 /******************************************************************************/
 
@@ -16,31 +16,30 @@
 void	*routine(void *bridge)
 {
 	t_philo			*philo;
-	struct timeval	start;
+	unsigned long	start;
 	struct timeval	end;
 	int				index;
 
 	index = -1;
 	philo = bridge;
-	gettimeofday(&start, 0);
-	gettimeofday(&end, 0);
+	start = philo->params->start_time;
 	while (++index != philo->params->total_eat)
 	{
 		pthread_mutex_lock(&(philo->forks[0]));
 		pthread_mutex_lock(&philo->params->print);
 		gettimeofday(&end, 0);
-		printf("%lu, %d prend une fourchette\n", convert_time(end)
-				- convert_time(start), philo->id);
+		printf("◦%lu %d has taken a fork\n", convert_time(end)
+				- start, philo->id);
 		pthread_mutex_unlock(&philo->params->print);
 		pthread_mutex_lock(&(philo->forks[1]));
 		pthread_mutex_lock(&philo->params->print);
 		gettimeofday(&end, 0);
-		printf("%lu, %d prend une fourchette\n", convert_time(end)
-				- convert_time(start), philo->id);
+		printf("◦%lu %d has taken a fork\n", convert_time(end)
+				- start, philo->id);
 		pthread_mutex_unlock(&philo->params->print);
 		pthread_mutex_lock(&philo->params->print);
 		gettimeofday(&end, 0);
-		printf("%lu, %d mange\n", convert_time(end) - convert_time(start),
+		printf("◦%lu %d is eating\n", convert_time(end) - start,
 				philo->id);
 		pthread_mutex_unlock(&philo->params->print);
 		wait_mili(end, philo->params->time_eat);
@@ -80,8 +79,11 @@ t_philo	*initiate_philosophers(t_g_params *params)
 
 t_g_params	initiate_parameters(int argc, char **argv)
 {
+	struct timeval temp;
 	t_g_params	base_parameters;
 
+	gettimeofday(&temp, 0);
+	base_parameters.start_time = convert_time(temp);
 	base_parameters.total_philos = ft_atoi(argv[1]);
 	base_parameters.time_death = ft_atoi(argv[2]);
 	base_parameters.time_eat = ft_atoi(argv[3]);

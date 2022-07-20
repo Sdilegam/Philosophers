@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+      */
 /*                                                     +#+          +#+       */
 /*   Created: 2022/07/18 13:00:13 by sdi-lega         #+#  #+#+#+#+#+#        */
-/*   Updated: 2022/07/19 18:20:27 by sdi-lega        ###                      */
+/*   Updated: 2022/07/20 16:56:27 by sdi-lega        ###                      */
 /*                                                                            */
 /******************************************************************************/
 
@@ -28,6 +28,7 @@ typedef struct s_g_params{
 	int time_eat;
 	int	time_sleep;
 	int	total_eat;
+	unsigned long start_time;
 	pthread_mutex_t	print;
 }	t_g_params;
 
