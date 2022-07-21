@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+      */
 /*                                                     +#+          +#+       */
 /*   Created: 2022/07/19 12:28:24 by sdi-lega         #+#  #+#+#+#+#+#        */
-/*   Updated: 2022/07/21 14:08:27 by sdi-lega        ###                      */
+/*   Updated: 2022/07/21 17:55:41 by sdi-lega        ###                      */
 /*                                                                            */
 /******************************************************************************/
 
@@ -18,15 +18,19 @@ void	*routine(void *bridge)
 	t_philo			*philo;
 	unsigned long	start;
 	int				index;
+	int				finished;
 
-	index = -1;
+	index = 0;
 	philo = bridge;
+	finished = 0;
 	start = philo->params->start_time;
-	while (++index != philo->params->total_eat)
+	if (philo->id % 2 == 0)
+		usleep((100));
+	while (1)
 	{
 		routine_take_fork(philo, 0, start);
 		routine_take_fork(philo, 1, start);
-		routine_eat(philo, start);
+		routine_eat(philo, start, &finished, ++index);
 		routine_sleep(philo, start);
 		routine_think(philo, start);
 	}
@@ -35,17 +39,18 @@ void	*routine(void *bridge)
 
 t_philo	*initiate_philosophers(t_g_params *params)
 {
-	t_philo			*philosophers_list;
-	t_philo			*cursor;
-	int				index;
+	t_philo	*philosophers_list;
+	t_philo	*cursor;
+	int		index;
 
-	index = 0;
+	index = 1;
 	philosophers_list = create_node(params);
 	cursor = philosophers_list;
-	cursor->id = ++index;
-	if (pthread_mutex_init(&cursor->forks[0], 0) != 0)
-		printf(("aled\n"));
-	if (pthread_mutex_init(&cursor->forks[1], 0) != 0)
+	cursor->next = cursor;
+	cursor->id = index;
+	cursor->lfork = malloc(sizeof(pthread_mutex_t));
+	cursor->rfork = 0;
+	if (pthread_mutex_init(cursor->lfork, 0) != 0)
 		printf(("aled\n"));
 	cursor->last_ate = params->start_time;
 	while (++index < params->total_philos)
@@ -53,17 +58,25 @@ t_philo	*initiate_philosophers(t_g_params *params)
 		join_node(cursor, create_node(params));
 		cursor = cursor->next;
 		cursor->id = index;
-		cursor->forks[0] = cursor->previous->forks[1];
-		if (pthread_mutex_init(&cursor->forks[1], 0) != 0)
+		cursor->lfork = malloc(sizeof(pthread_mutex_t));
+		if (pthread_mutex_init(cursor->lfork, 0) != 0)
 			printf(("aled\n"));
+		cursor->previous->rfork = cursor->lfork;
 		cursor->last_ate = params->start_time;
 	}
-	join_node(cursor, create_node(params));
-	cursor = cursor->next;
-	cursor->id = index;
-	cursor->forks[0] = cursor->previous->forks[1];
-	cursor->forks[1] = philosophers_list->forks[0];
-	cursor->last_ate = params->start_time;
+	if (params->total_philos > 1)
+	{
+		join_node(cursor, create_node(params));
+		cursor = cursor->next;
+		cursor->next = philosophers_list;
+		cursor->id = index;
+		cursor->lfork = malloc(sizeof(pthread_mutex_t));
+		if (pthread_mutex_init(cursor->lfork, 0) != 0)
+			printf(("aled\n"));
+		cursor->previous->rfork = cursor->lfork;
+		cursor->rfork = philosophers_list->lfork;
+		cursor->last_ate = params->start_time;
+	}
 	return (philosophers_list);
 }
 
@@ -105,8 +118,9 @@ int	main(int argc, char **argv)
 	while (++index < base_parameters.total_philos)
 	{
 		pthread_create(&threads[index], 0, &routine, cursor);
+		pthread_detach(threads[index]);
 		cursor = cursor->next;
 	}
-	pthread_join(threads[base_parameters.total_philos - 1], 0);
+	check_death(philo, base_parameters.start_time);
 	return (0);
 }

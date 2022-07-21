@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+      */
 /*                                                     +#+          +#+       */
 /*   Created: 2022/07/20 13:07:09 by sdi-lega         #+#  #+#+#+#+#+#        */
-/*   Updated: 2022/07/21 13:27:22 by sdi-lega        ###                      */
+/*   Updated: 2022/07/21 16:40:55 by sdi-lega        ###                      */
 /*                                                                            */
 /******************************************************************************/
 
@@ -14,8 +14,7 @@
 
 unsigned long	convert_time(struct timeval time)
 {
-	return (((long double)time.tv_sec * 1000000 + time.tv_usec)
-		/ 1000);
+	return (((long double)time.tv_sec * 1000000 + time.tv_usec) / 1000);
 }
 
 void	wait_mili(struct timeval start, long double duration)
@@ -26,7 +25,7 @@ void	wait_mili(struct timeval start, long double duration)
 	gettimeofday(&end, 0);
 	while (convert_time(end) - convert_time(start) < duration)
 	{
-		usleep(250);
+		usleep(100);
 		gettimeofday(&end, 0);
 	}
 }

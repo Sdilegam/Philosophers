@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+      */
 /*                                                     +#+          +#+       */
 /*   Created: 2022/07/18 13:00:13 by sdi-lega         #+#  #+#+#+#+#+#        */
-/*   Updated: 2022/07/21 12:22:11 by sdi-lega        ###                      */
+/*   Updated: 2022/07/21 14:35:13 by sdi-lega        ###                      */
 /*                                                                            */
 /******************************************************************************/
 
@@ -38,7 +38,8 @@ typedef struct s_philo{
 	int				id;
 	struct s_philo	*next;
 	struct s_philo	*previous;
-	pthread_mutex_t	forks[2];
+	pthread_mutex_t	*lfork;
+	pthread_mutex_t	*rfork;
 	unsigned long last_ate;
 	t_g_params		*params;
 }	t_philo;
