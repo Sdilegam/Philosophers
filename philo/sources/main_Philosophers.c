@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
-/*                                                      ::::::  :::::::::::   */
-/*   main_Philosophers.c                              +:+ :+:  :+:     :+:    */
-/*                                                       +:+    +:+   +:+     */
-/*   By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+      */
-/*                                                     +#+          +#+       */
-/*   Created: 2022/07/19 12:28:24 by sdi-lega         #+#  #+#+#+#+#+#        */
-/*   Updated: 2022/07/21 17:55:41 by sdi-lega        ###                      */
+/*                                                        :::      ::::::::   */
+/*   main_Philosophers.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/19 12:28:24 by sdi-lega          #+#    #+#             */
+/*   Updated: 2022/07/22 00:06:08 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "Philosophers.h"
 #include "main_Philosophers.h"
@@ -51,7 +51,7 @@ t_philo	*initiate_philosophers(t_g_params *params)
 	cursor->lfork = malloc(sizeof(pthread_mutex_t));
 	cursor->rfork = 0;
 	if (pthread_mutex_init(cursor->lfork, 0) != 0)
-		printf(("aled\n"));
+		printf("aled\n");
 	cursor->last_ate = params->start_time;
 	while (++index < params->total_philos)
 	{
@@ -121,6 +121,6 @@ int	main(int argc, char **argv)
 		pthread_detach(threads[index]);
 		cursor = cursor->next;
 	}
-	check_death(philo, base_parameters.start_time);
+	check_death(philo, base_parameters.start_time, threads);
 	return (0);
 }

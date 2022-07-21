@@ -1,19 +1,19 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
-/*                                                      ::::::  :::::::::::   */
-/*   death_handler.c                                  +:+ :+:  :+:     :+:    */
-/*                                                       +:+    +:+   +:+     */
-/*   By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+      */
-/*                                                     +#+          +#+       */
-/*   Created: 2022/07/21 16:12:05 by sdi-lega         #+#  #+#+#+#+#+#        */
-/*   Updated: 2022/07/21 17:24:18 by sdi-lega        ###                      */
+/*                                                        :::      ::::::::   */
+/*   death_handler.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/21 16:12:05 by sdi-lega          #+#    #+#             */
+/*   Updated: 2022/07/22 00:05:56 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "Philosophers.h"
 #include "death_handler.h"
 
-void	check_death(t_philo *philo, unsigned long start)
+void	check_death(t_philo *philo, unsigned long start, pthread_t *threads)
 {
 	struct timeval	end;
 	t_philo			*cursor;
@@ -29,8 +29,7 @@ void	check_death(t_philo *philo, unsigned long start)
 		{
 			pthread_mutex_lock(&philo->params->print);
 			printf("%lu\t\t%d died\n", convert_time(end) - start, cursor->id);
-			// system("leaks philo");
-			exit(1);
+			clean_exit(philo, threads, philo->params->total_philos);
 		}
 		cursor = cursor->next;
 	}
