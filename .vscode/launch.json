@@ -9,7 +9,7 @@
 			"program": "${cwd}/philo/philo",
 			"cwd": "${workspaceFolder}",
 			"request": "launch",
-			"args": ["2", "1", "6", "8"],
+			"args": ["3", "310", "200", "100"],
 			"preLaunchTask": "C/C++: gcc build active file",
 			"type": "cppdbg",
 			"MIMode": "lldb"
