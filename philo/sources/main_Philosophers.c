@@ -28,8 +28,8 @@ void	*routine(void *bridge)
 		usleep((100));
 	while (1)
 	{
-		routine_take_fork(philo, 0, start);
-		routine_take_fork(philo, 1, start);
+		routine_take_fork(philo, 1 - (philos-id %2), start);
+		routine_take_fork(philo, (philos-id %2), start);
 		routine_eat(philo, start, &finished, ++index);
 		routine_sleep(philo, start);
 		routine_think(philo, start);
