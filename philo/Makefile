@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/19 12:28:37 by sdi-lega          #+#    #+#              #
-#    Updated: 2022/07/22 11:03:59 by sdi-lega         ###   ########.fr        #
+#    Updated: 2022/07/22 11:10:42 by sdi-lega         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -94,13 +94,6 @@ mandatory:			${NAME}
 ${OBJ_DIR}%.o:		${DIR}%.c
 			@ echo  "\rCreating common \"${@F:.c=.o}\" object file.\033[K\c"
 			${SILENT} ${CC} ${CC_FLAGS} -c $< -o $@
-			@ sleep ${SLEEP_TIME}
-			
-sources/headers/%.h:		${DIR}%.c
-			@ echo updating header files
-			@ echo $@
-			../Makeheaders $(shell find ${DIR} -name "*.c" | sed 's/${DIR:/=\/}//' | awk 'BEGIN {FS="."}{print "${DIR}"$$1".c:${DIR}headers/"$$1".h"}')
-			touch $@
 			@ sleep ${SLEEP_TIME}
 
 #EXECUTABLES#
