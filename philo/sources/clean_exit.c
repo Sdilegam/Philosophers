@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 23:08:50 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/07/22 00:08:20 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/07/22 10:48:50 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,12 @@ void	clean_philos(t_philo *philos, int length)
 	cursor = philos;
 	while (++index <= length)
 	{
-		pthread_mutex_destroy(cursor->lfork);
-		free(cursor->lfork);
+		if (cursor->lfork)
+		{
+			if (cursor->lfork->__sig != 0)
+				pthread_mutex_destroy(cursor->lfork);
+			free(cursor->lfork);
+		}
 		temp = cursor->next;
 		free(cursor);
 		cursor = temp;

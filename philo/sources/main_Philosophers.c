@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 12:28:24 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/07/22 00:06:08 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/07/22 10:48:11 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	*routine(void *bridge)
 	finished = 0;
 	start = philo->params->start_time;
 	if (philo->id % 2 == 0)
-		usleep((100));
+		usleep((1000));
 	while (1)
 	{
-		routine_take_fork(philo, 1 - (philos-id %2), start);
-		routine_take_fork(philo, (philos-id %2), start);
+		routine_take_fork(philo, 0, start);
+		routine_take_fork(philo, 1, start);
 		routine_eat(philo, start, &finished, ++index);
 		routine_sleep(philo, start);
 		routine_think(philo, start);
@@ -37,45 +37,39 @@ void	*routine(void *bridge)
 	return (0);
 }
 
-t_philo	*initiate_philosophers(t_g_params *params)
+void	allocate_init_mutexes(t_philo *ph, t_philo *cursor, pthread_t *th,
+		int i)
+{
+	cursor->lfork = malloc(sizeof(pthread_mutex_t));
+	if (!cursor->lfork)
+		clean_exit(ph, th, i + 1);
+	if (pthread_mutex_init(cursor->lfork, 0) != 0)
+		clean_exit(ph, th, i + 1);
+}
+
+t_philo	*initiate_philosophers(t_g_params *params, pthread_t *threads)
 {
 	t_philo	*philosophers_list;
 	t_philo	*cursor;
 	int		index;
 
-	index = 1;
-	philosophers_list = create_node(params);
-	cursor = philosophers_list;
-	cursor->next = cursor;
-	cursor->id = index;
-	cursor->lfork = malloc(sizeof(pthread_mutex_t));
-	cursor->rfork = 0;
-	if (pthread_mutex_init(cursor->lfork, 0) != 0)
-		printf("aled\n");
-	cursor->last_ate = params->start_time;
+	index = -1;
 	while (++index < params->total_philos)
 	{
-		join_node(cursor, create_node(params));
-		cursor = cursor->next;
-		cursor->id = index;
-		cursor->lfork = malloc(sizeof(pthread_mutex_t));
-		if (pthread_mutex_init(cursor->lfork, 0) != 0)
-			printf(("aled\n"));
+		if (index == 0)
+		{
+			philosophers_list = create_node(params);
+			cursor = philosophers_list;
+		}
+		else
+			cursor = join_node(cursor, create_node(params));
+		allocate_init_mutexes(philosophers_list, cursor, threads, index);
 		cursor->previous->rfork = cursor->lfork;
-		cursor->last_ate = params->start_time;
-	}
-	if (params->total_philos > 1)
-	{
-		join_node(cursor, create_node(params));
-		cursor = cursor->next;
-		cursor->next = philosophers_list;
-		cursor->id = index;
-		cursor->lfork = malloc(sizeof(pthread_mutex_t));
-		if (pthread_mutex_init(cursor->lfork, 0) != 0)
-			printf(("aled\n"));
-		cursor->previous->rfork = cursor->lfork;
-		cursor->rfork = philosophers_list->lfork;
-		cursor->last_ate = params->start_time;
+		if (index == params->total_philos - 1)
+		{
+			cursor->next = philosophers_list;
+			cursor->rfork = philosophers_list->lfork;
+		}
 	}
 	return (philosophers_list);
 }
@@ -88,6 +82,8 @@ t_g_params	initiate_parameters(int argc, char **argv)
 	gettimeofday(&temp, 0);
 	base_parameters.start_time = convert_time(temp);
 	base_parameters.total_philos = ft_atoi(argv[1]);
+	if (base_parameters.total_philos <= 0)
+		exit(0);
 	base_parameters.time_death = ft_atoi(argv[2]);
 	base_parameters.time_eat = ft_atoi(argv[3]);
 	base_parameters.time_sleep = ft_atoi(argv[4]);
@@ -109,11 +105,13 @@ int	main(int argc, char **argv)
 	int			index;
 
 	if (argc < 5 || 6 < argc)
-		return (0);
+		return (1);
 	index = -1;
 	base_parameters = initiate_parameters(argc, argv);
 	threads = malloc(sizeof(pthread_t) * base_parameters.total_philos);
-	philo = initiate_philosophers((&base_parameters));
+	if (threads == 0)
+		return (1);
+	philo = initiate_philosophers((&base_parameters), threads);
 	cursor = philo;
 	while (++index < base_parameters.total_philos)
 	{
@@ -122,5 +120,6 @@ int	main(int argc, char **argv)
 		cursor = cursor->next;
 	}
 	check_death(philo, base_parameters.start_time, threads);
-	return (0);
+	clean_exit(philo, threads, philo->params->total_philos);
+	return (1);
 }

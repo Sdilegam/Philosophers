@@ -1,14 +1,14 @@
-#******************************************************************************#
+# **************************************************************************** #
 #                                                                              #
-#                                                       ::::::  :::::::::::    #
-#    Makefile                                         +:+ :+:  :+:     :+:     #
-#                                                        +:+    +:+   +:+      #
-#    By: sdi-lega <sdi-lega@student.s19.be>             +:+      +:+:+:+       #
-#                                                      +#+          +#+        #
-#    Created: 2022/07/19 12:28:37 by sdi-lega         #+#  #+#+#+#+#+#         #
-#    Updated: 2022/07/21 16:20:34 by sdi-lega        ###                       #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/07/19 12:28:37 by sdi-lega          #+#    #+#              #
+#    Updated: 2022/07/22 11:03:59 by sdi-lega         ###   ########.fr        #
 #                                                                              #
-#******************************************************************************#
+# **************************************************************************** #
 
 ################################################################################
 #																			   #
@@ -46,7 +46,7 @@ SRCS				=	main_Philosophers.c\
 						time_handling.c\
 						actions.c\
 						death_handler.c\
-						test.c\
+						clean_exit.c\
 
 OBJS				=	${addprefix ${OBJ_DIR}, ${SRCS:.c=.o}}
 
@@ -104,7 +104,7 @@ sources/headers/%.h:		${DIR}%.c
 			@ sleep ${SLEEP_TIME}
 
 #EXECUTABLES#
-${NAME}:				${OBJS_DIR} headers ${OBJS}
+${NAME}:				${OBJ_DIR} ${OBJS}
 			@ echo "\r\"$@\" executable created\033[K"
 			${SILENT} ${CC} ${OBJS} -o $@
 			@ sleep ${SLEEP_TIME}
@@ -122,6 +122,7 @@ debug: re
 
 norm:
 		python3 -m c_formatter_42 ${addprefix ${DIR}, ${SRCS}}
+		python3 -m c_formatter_42 ${addprefix ${DIR}headers/, ${SRCS:.c=.h}} sources/headers/Philosophers.h
 
 #####################################
 #									#
@@ -158,8 +159,8 @@ fclean:			clean ${addprefix clean_,${dir ${ALL_LIBS}}} clean_exe clean_bonus
 #									#
 #####################################
 
-${OBJECTS_DIR}:
-			mkdir ${OBJS_DIR}
+${OBJ_DIR}:
+			mkdir ${OBJ_DIR}
 
 start:				
 			${SILENT} mkdir -p sources/objects

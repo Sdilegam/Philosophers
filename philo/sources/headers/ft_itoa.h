@@ -1,4 +1,19 @@
-/* This file was automatically generated.  Do not edit! */
-#undef INTERFACE
-char *ft_itoa(int n);
-int len_int(int n);
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_itoa.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/22 10:56:19 by sdi-lega          #+#    #+#             */
+/*   Updated: 2022/07/22 10:59:31 by sdi-lega         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef FT_ITOA_H
+# define FT_ITOA_H
+
+char	*ft_itoa(int n);
+int		len_int(int n);
+
+#endif
