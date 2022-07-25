@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/19 12:28:37 by sdi-lega          #+#    #+#              #
-#    Updated: 2022/07/22 11:10:42 by sdi-lega         ###   ########.fr        #
+#    Updated: 2022/07/25 10:26:07 by sdi-lega         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ NAME				=	philo#Name of project.
 #Common#
 DIR					=	sources/
 OBJ_DIR				=	${DIR}objects/
+HDR_DIR				=	${DIR}headers/
 
 
 #Other#
@@ -153,11 +154,11 @@ fclean:			clean ${addprefix clean_,${dir ${ALL_LIBS}}} clean_exe clean_bonus
 #####################################
 
 ${OBJ_DIR}:
-			mkdir ${OBJ_DIR}
+			mkdir -p ${OBJ_DIR}
+${HDR_DIR}:
+			mkdir -p ${HDR_DIR}
 
-start:				
-			${SILENT} mkdir -p sources/objects
-			${SILENT} mkdir -p sources/headers
+start:				${OBJ_DIR} ${HDR_DIR}
 			
 .phony: 	fclean clean clean_bonus clean_libs clean_exe start all mandatory bonus re 
 
