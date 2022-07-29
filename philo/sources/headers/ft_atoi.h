@@ -1,18 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_atoi.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/22 10:56:41 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/07/22 10:59:26 by sdi-lega         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#ifndef FT_ATOI_H
-# define FT_ATOI_H
-
+/* This file was automatically generated.  Do not edit! */
+#undef INTERFACE
 int	ft_atoi(const char *str);
-
-#endif

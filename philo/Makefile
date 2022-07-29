@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/19 12:28:37 by sdi-lega          #+#    #+#              #
-#    Updated: 2022/07/25 10:26:07 by sdi-lega         ###   ########.fr        #
+#    Updated: 2022/07/29 14:10:43 by sdi-lega         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,6 @@ LIB_DIR				=	libraries/
 #Common#
 SRCS				=	main_Philosophers.c\
 						ft_atoi.c\
-						ft_itoa.c\
 						philosophers_list.c\
 						time_handling.c\
 						actions.c\

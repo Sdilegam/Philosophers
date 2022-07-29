@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 12:28:24 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/07/22 10:48:11 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/07/29 14:22:15 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ void	*routine(void *bridge)
 		usleep((1000));
 	while (1)
 	{
-		routine_take_fork(philo, 0, start);
-		routine_take_fork(philo, 1, start);
-		routine_eat(philo, start, &finished, ++index);
-		routine_sleep(philo, start);
-		routine_think(philo, start);
+		if (routine_take_fork(philo, 0, start) == 1
+			|| routine_take_fork(philo, 1, start) == 1
+			|| routine_eat(philo, start, &finished, ++index) == 1
+			|| routine_sleep(philo, start) == 1
+			|| routine_think(philo, start) == 1)
+			return (0);
 	}
 	return (0);
 }
@@ -91,8 +92,9 @@ t_g_params	initiate_parameters(int argc, char **argv)
 	if (argc == 6)
 		base_parameters.total_eat = ft_atoi(argv[5]);
 	pthread_mutex_init(&base_parameters.print, 0);
-	pthread_mutex_init(&base_parameters.death, 0);
+	pthread_mutex_init(&base_parameters.dying, 0);
 	base_parameters.finished = 0;
+	base_parameters.end = 0;
 	return (base_parameters);
 }
 
@@ -116,10 +118,14 @@ int	main(int argc, char **argv)
 	while (++index < base_parameters.total_philos)
 	{
 		pthread_create(&threads[index], 0, &routine, cursor);
-		pthread_detach(threads[index]);
 		cursor = cursor->next;
 	}
 	check_death(philo, base_parameters.start_time, threads);
+	index = -1;
+	while (++index < base_parameters.total_philos)
+	{
+		pthread_join(threads[index], 0);
+	}
 	clean_exit(philo, threads, philo->params->total_philos);
-	return (1);
+	return (0);
 }

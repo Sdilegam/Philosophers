@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 13:00:13 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/07/22 11:01:06 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/07/29 11:17:34 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ typedef struct s_g_params
 	int					total_eat;
 	unsigned long		start_time;
 	pthread_mutex_t		print;
-	pthread_mutex_t		death;
+	pthread_mutex_t		dying;
 	int					finished;
+	char				end;
 }						t_g_params;
 
 typedef struct s_philo
