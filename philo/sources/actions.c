@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 11:27:04 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/07/29 14:11:45 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/08/03 13:16:43 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,8 @@ int	routine_eat(t_philo *philo, unsigned long start, int *finished, int i)
 	struct timeval	end;
 
 	gettimeofday(&end, 0);
-	philo->last_ate = convert_time(end);
 	pthread_mutex_lock(&philo->params->dying);
+	philo->last_ate = convert_time(end);
 	if (philo->params->end == 1)
 	{
 		pthread_mutex_unlock(&philo->params->dying);
