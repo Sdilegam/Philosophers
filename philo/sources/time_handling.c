@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 13:07:09 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/08/03 16:58:07 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/07 09:25:57 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	wait_mili(struct timeval start, long double duration)
 {
 	struct timeval	end;
 
+	if (duration == 0)
+		return ;
 	gettimeofday(&start, 0);
 	gettimeofday(&end, 0);
 	while (convert_time(end) - convert_time(start) < duration)

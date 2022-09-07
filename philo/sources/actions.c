@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 11:27:04 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/08/03 13:16:43 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/07 10:01:00 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ int	routine_take_fork(t_philo *philo, int fork, unsigned long start)
 		pthread_mutex_lock(philo->lfork);
 	else
 	{
-		if (philo->rfork)
+		if (philo->rfork != philo->lfork)
 			pthread_mutex_lock(philo->rfork);
 		else
-			usleep(philo->params->time_death + 500 * 1000);
+			usleep((philo->params->time_death + 1) * 1000);
 	}
 	gettimeofday(&end, 0);
 	pthread_mutex_lock(&philo->params->dying);

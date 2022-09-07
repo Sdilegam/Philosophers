@@ -6,14 +6,14 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 16:12:05 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/08/03 12:18:30 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/07 09:35:15 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Philosophers.h"
 #include "death_handler.h"
 
-void	check_death(t_philo *philo, unsigned long start, pthread_t *threads)
+void	check_death(t_philo *philo, unsigned long start)
 {
 	struct timeval	end;
 	t_philo			*cursor;
@@ -21,14 +21,16 @@ void	check_death(t_philo *philo, unsigned long start, pthread_t *threads)
 	cursor = philo;
 	while (1)
 	{
-		if (philo->params->finished == philo->params->total_philos)
-		{
-			clean_exit(philo, threads, philo->params->total_philos);
-		}
 		gettimeofday(&end, 0);
 		pthread_mutex_lock(&philo->params->dying);
-		if ((int)(convert_time(end)
-				- cursor->last_ate) >= cursor->params->time_death)
+		if (philo->params->finished == philo->params->total_philos)
+		{
+			philo->params->end = 1;
+			pthread_mutex_unlock(&philo->params->dying);
+			return ;
+		}
+		else if ((int)(convert_time(end)
+					- cursor->last_ate) >= cursor->params->time_death)
 		{
 			philo->params->end = 1;
 			pthread_mutex_lock(&philo->params->print);

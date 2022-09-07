@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 12:28:24 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/08/03 17:07:11 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/07 09:53:16 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,16 @@ int	set_global_mutexes(t_g_params *params)
 
 int	check_params(t_g_params *p)
 {
-	if (p->total_philos == -1 || p->time_death == -1 || p->time_eat == -1 || p->time_sleep == -1 || p->total_eat == -10)
+	if (p->total_philos < 1 || p->time_death < 1 || p->time_eat < 1
+		|| p->time_sleep < 1 || p->total_eat == -10)
 	{
-		printf("Bad parameters\n");
+		printf("Bad parameters.\nPlease use parameters bigger than 0.\n");
 		return (1);
 	}
 	if (set_global_mutexes(p) == 1)
 		return (1);
 	return (0);
 }
-
 
 t_g_params	initiate_parameters(int argc, char **argv)
 {
@@ -142,8 +142,8 @@ int	main(int argc, char **argv)
 		pthread_create(&threads[index], 0, &routine, cursor);
 		cursor = cursor->next;
 	}
-	check_death(philo, base_parameters.start_time, threads);
 	index = -1;
+	check_death(philo, base_parameters.start_time, threads);
 	while (++index < base_parameters.total_philos)
 		pthread_join(threads[index], 0);
 	clean_exit(philo, threads, philo->params->total_philos);
