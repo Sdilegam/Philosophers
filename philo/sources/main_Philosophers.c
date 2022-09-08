@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 12:28:24 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/09/07 09:53:16 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/08 09:35:54 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,55 +37,6 @@ void	*routine(void *bridge)
 	return (0);
 }
 
-void	allocate_init_mutexes(t_philo *ph, t_philo *cursor, pthread_t *th,
-		int i)
-{
-	cursor->lfork = malloc(sizeof(pthread_mutex_t));
-	if (!cursor->lfork)
-		clean_exit(ph, th, i + 1);
-	if (pthread_mutex_init(cursor->lfork, 0) != 0)
-		clean_exit(ph, th, i + 1);
-}
-
-t_philo	*initiate_philosophers(t_g_params *params, pthread_t *threads)
-{
-	t_philo	*philosophers_list;
-	t_philo	*cursor;
-	int		index;
-
-	index = -1;
-	while (++index < params->total_philos)
-	{
-		if (index == 0)
-		{
-			philosophers_list = create_node(params);
-			cursor = philosophers_list;
-		}
-		else
-			cursor = join_node(cursor, create_node(params));
-		allocate_init_mutexes(philosophers_list, cursor, threads, index);
-		cursor->previous->rfork = cursor->lfork;
-		if (index == params->total_philos - 1)
-		{
-			cursor->next = philosophers_list;
-			cursor->rfork = philosophers_list->lfork;
-		}
-	}
-	return (philosophers_list);
-}
-
-int	set_global_mutexes(t_g_params *params)
-{
-	if (pthread_mutex_init(&params->print, 0) != 0)
-		return (1);
-	if (pthread_mutex_init(&params->dying, 0) != 0)
-	{
-		pthread_mutex_destroy(&params->print);
-		return (1);
-	}
-	return (0);
-}
-
 int	check_params(t_g_params *p)
 {
 	if (p->total_philos < 1 || p->time_death < 1 || p->time_eat < 1
@@ -97,25 +48,6 @@ int	check_params(t_g_params *p)
 	if (set_global_mutexes(p) == 1)
 		return (1);
 	return (0);
-}
-
-t_g_params	initiate_parameters(int argc, char **argv)
-{
-	struct timeval	temp;
-	t_g_params		base_parameters;
-
-	gettimeofday(&temp, 0);
-	base_parameters.finished = 0;
-	base_parameters.end = 0;
-	base_parameters.start_time = convert_time(temp);
-	base_parameters.total_philos = ft_atoi(argv[1]);
-	base_parameters.time_death = ft_atoi(argv[2]);
-	base_parameters.time_eat = ft_atoi(argv[3]);
-	base_parameters.time_sleep = ft_atoi(argv[4]);
-	base_parameters.total_eat = -100;
-	if (argc == 6)
-		base_parameters.total_eat = ft_atoi(argv[5]);
-	return (base_parameters);
 }
 
 int	main(int argc, char **argv)
@@ -136,16 +68,17 @@ int	main(int argc, char **argv)
 	if (threads == 0)
 		return (1);
 	philo = initiate_philosophers((&base_parameters), threads);
+	if (!philo)
+		return (1);
 	cursor = philo;
-	while (++index < base_parameters.total_philos)
+	while (++index < base_parameters.total_philos && cursor)
 	{
 		pthread_create(&threads[index], 0, &routine, cursor);
 		cursor = cursor->next;
 	}
-	index = -1;
-	check_death(philo, base_parameters.start_time, threads);
-	while (++index < base_parameters.total_philos)
-		pthread_join(threads[index], 0);
-	clean_exit(philo, threads, philo->params->total_philos);
+	check_death(philo, base_parameters.start_time);
+	while (index > -1)
+		pthread_join(threads[index--], 0);
+	clean_exit(philo, threads, philo->params->total_philos, &base_parameters);
 	return (0);
 }

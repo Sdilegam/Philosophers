@@ -6,17 +6,15 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 11:27:04 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/09/07 10:01:00 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/08 08:25:51 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Philosophers.h"
 #include "actions.h"
 
-int	routine_take_fork(t_philo *philo, int fork, unsigned long start)
+void	lock_fork(t_philo *philo, int fork)
 {
-	struct timeval	end;
-
 	if (fork == 0)
 		pthread_mutex_lock(philo->lfork);
 	else
@@ -26,6 +24,13 @@ int	routine_take_fork(t_philo *philo, int fork, unsigned long start)
 		else
 			usleep((philo->params->time_death + 1) * 1000);
 	}
+}
+
+int	routine_take_fork(t_philo *philo, int fork, unsigned long start)
+{
+	struct timeval	end;
+
+	lock_fork(philo, fork);
 	gettimeofday(&end, 0);
 	pthread_mutex_lock(&philo->params->dying);
 	if (philo->params->end == 1)

@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 15:48:59 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/07/22 10:45:57 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/08 09:29:14 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_philo	*create_node(t_g_params *params)
 	if (!node)
 		return (0);
 	node->id = 1;
-	node->next = node;
+	node->next = 0;
 	node->previous = node;
 	node->params = params;
 	node->lfork = 0;
@@ -31,7 +31,7 @@ t_philo	*create_node(t_g_params *params)
 
 t_philo	*join_node(t_philo *first, t_philo *second)
 {
-	if (!second || !first)
+	if (!first || !second)
 		return (0);
 	second->id = first->id + 1;
 	first->next = second;

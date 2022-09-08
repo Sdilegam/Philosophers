@@ -8,3 +8,4 @@ int				routine_eat(t_philo *philo, unsigned long start, int *finished,
 unsigned long	convert_time(struct timeval time);
 int				routine_take_fork(t_philo *philo, int fork,
 					unsigned long start);
+void			lock_fork(t_philo *philo, int fork);

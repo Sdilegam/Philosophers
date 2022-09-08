@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/19 12:28:37 by sdi-lega          #+#    #+#              #
-#    Updated: 2022/08/03 13:36:05 by sdi-lega         ###   ########.fr        #
+#    Updated: 2022/09/08 08:50:33 by sdi-lega         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,6 +47,7 @@ SRCS				=	main_Philosophers.c\
 						actions.c\
 						death_handler.c\
 						clean_exit.c\
+						init.c
 
 OBJS				=	${addprefix ${OBJ_DIR}, ${SRCS:.c=.o}}
 
