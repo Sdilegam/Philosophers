@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/19 12:28:24 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/09/08 09:35:54 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/08 10:45:11 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,48 +37,26 @@ void	*routine(void *bridge)
 	return (0);
 }
 
-int	check_params(t_g_params *p)
-{
-	if (p->total_philos < 1 || p->time_death < 1 || p->time_eat < 1
-		|| p->time_sleep < 1 || p->total_eat == -10)
-	{
-		printf("Bad parameters.\nPlease use parameters bigger than 0.\n");
-		return (1);
-	}
-	if (set_global_mutexes(p) == 1)
-		return (1);
-	return (0);
-}
-
 int	main(int argc, char **argv)
 {
-	t_g_params	base_parameters;
+	t_params	base_parameters;
 	t_philo		*philo;
-	t_philo		*cursor;
 	pthread_t	*threads;
-	int			index;
 
-	index = -1;
 	if (argc < 5 || 6 < argc)
 		return (1);
 	base_parameters = initiate_parameters(argc, argv);
 	if (check_params(&base_parameters) == 1)
 		return (1);
-	threads = malloc(sizeof(pthread_t) * base_parameters.total_philos);
+	threads = malloc(sizeof(pthread_t) * base_parameters.n_philos);
 	if (threads == 0)
 		return (1);
 	philo = initiate_philosophers((&base_parameters), threads);
 	if (!philo)
 		return (1);
-	cursor = philo;
-	while (++index < base_parameters.total_philos && cursor)
-	{
-		pthread_create(&threads[index], 0, &routine, cursor);
-		cursor = cursor->next;
-	}
+	create_threads(threads, philo, base_parameters.n_philos);
 	check_death(philo, base_parameters.start_time);
-	while (index > -1)
-		pthread_join(threads[index--], 0);
-	clean_exit(philo, threads, philo->params->total_philos, &base_parameters);
+	join_threads(threads, base_parameters.n_philos);
+	clean_exit(philo, threads, philo->params->n_philos, &base_parameters);
 	return (0);
 }

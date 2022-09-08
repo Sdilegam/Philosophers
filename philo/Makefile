@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/19 12:28:37 by sdi-lega          #+#    #+#              #
-#    Updated: 2022/09/08 08:50:33 by sdi-lega         ###   ########.fr        #
+#    Updated: 2022/09/08 10:44:26 by sdi-lega         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,14 +40,18 @@ LIB_DIR				=	libraries/
 #####################################
 
 #Common#
-SRCS				=	main_Philosophers.c\
-						ft_atoi.c\
-						philosophers_list.c\
-						time_handling.c\
-						actions.c\
-						death_handler.c\
-						clean_exit.c\
-						init.c
+C_SRCS				=	main_Philosophers\
+						ft_atoi\
+						philosophers_list\
+						time_handling\
+						actions\
+						death_handler\
+						clean_exit\
+						program_inititation\
+						philosophers_initiation
+						
+SRCS				=	${addsuffix .c, ${C_SRCS}}
+
 
 OBJS				=	${addprefix ${OBJ_DIR}, ${SRCS:.c=.o}}
 

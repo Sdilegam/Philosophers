@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/18 13:00:13 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/07/29 11:17:34 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/08 10:42:19 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,27 +23,27 @@ typedef pthread_mutex_t	t_mutex;
 
 typedef struct s_g_params
 {
-	int					total_philos;
+	int					n_philos;
 	int					time_death;
 	int					time_eat;
 	int					time_sleep;
 	int					total_eat;
 	unsigned long		start_time;
-	pthread_mutex_t		print;
-	pthread_mutex_t		dying;
+	t_mutex				print;
+	t_mutex				dying;
 	int					finished;
 	char				end;
-}						t_g_params;
+}						t_params;
 
 typedef struct s_philo
 {
 	int					id;
 	struct s_philo		*next;
 	struct s_philo		*previous;
-	pthread_mutex_t		*lfork;
-	pthread_mutex_t		*rfork;
+	t_mutex				*lfork;
+	t_mutex				*rfork;
 	unsigned long		last_ate;
-	t_g_params			*params;
+	t_params			*params;
 }						t_philo;
 
 #endif /* TYPE_DEFINITION_H */

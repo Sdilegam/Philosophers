@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 16:12:05 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/09/08 09:31:59 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/08 10:42:19 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	check_finished(t_philo *philo)
 {
-	if (philo->params->finished == philo->params->total_philos)
+	if (philo->params->finished == philo->params->n_philos)
 	{
 		philo->params->end = 1;
 		pthread_mutex_unlock(&philo->params->dying);

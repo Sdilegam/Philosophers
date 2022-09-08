@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 23:08:50 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/09/08 09:14:38 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/08 10:29:52 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,14 @@ void	clean_philos(t_philo *philos, int length)
 	}
 }
 
-void	clean_params(t_g_params *params)
+void	clean_params(t_params *params)
 {
 	pthread_mutex_destroy(&params->dying);
 	pthread_mutex_destroy(&params->print);
 }
 
 void	clean_all(t_philo *philos, pthread_t *threads, int len,
-		t_g_params *params)
+		t_params *params)
 {
 	free(threads);
 	clean_params(params);
@@ -49,7 +49,7 @@ void	clean_all(t_philo *philos, pthread_t *threads, int len,
 }
 
 void	clean_exit(t_philo *philos, pthread_t *threads, int len,
-		t_g_params *params)
+		t_params *params)
 {
 	clean_all(philos, threads, len, params);
 }
