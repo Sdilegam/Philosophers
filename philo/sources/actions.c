@@ -6,7 +6,7 @@
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 11:27:04 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/09/08 08:25:51 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/14 12:03:24 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	routine_take_fork(t_philo *philo, int fork, unsigned long start)
 	pthread_mutex_unlock(&philo->params->dying);
 	pthread_mutex_lock(&philo->params->print);
 	printf("%lu\t\t%d has taken a fork\n", convert_time(end) - start,
-			philo->id);
+		philo->id);
 	pthread_mutex_unlock(&philo->params->print);
 	return (0);
 }

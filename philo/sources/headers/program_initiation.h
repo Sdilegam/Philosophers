@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   actions.h                                          :+:      :+:    :+:   */
+/*   program_inititation.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/14 11:52:59 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/09/14 11:53:36 by sdi-lega         ###   ########.fr       */
+/*   Created: 2022/09/14 11:57:12 by sdi-lega          #+#    #+#             */
+/*   Updated: 2022/09/14 11:58:02 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ACTIONS_H
-# define ACTIONS_H
+#ifndef PROGRAM_INITIATION_H
+# define PROGRAM_INITIATION_H
 
-int				routine_think(t_philo *philo, unsigned long start);
-int				routine_sleep(t_philo *philo, unsigned long start);
-void			wait_mili(struct timeval start, long double duration);
-int				routine_eat(t_philo *philo, unsigned long start, int *finished,
-					int i);
+int				ft_atoi(const char *str);
 unsigned long	convert_time(struct timeval time);
-int				routine_take_fork(t_philo *philo, int fork,
-					unsigned long start);
-void			lock_fork(t_philo *philo, int fork);
-
+t_params		initiate_parameters(int argc, char **argv);
+void			join_threads(pthread_t *threads, int n_philos);
+void			*routine(void *bridge);
+void			create_threads(pthread_t *threads, t_philo *philosopher,
+					int n_philos);
+int				set_global_mutexes(t_params *params);
+int				check_params(t_params *p);
 #endif

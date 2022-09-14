@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   program_inititation.c                                             :+:      :+:    :+:   */
+/*   program_initiation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 08:48:50 by sdi-lega          #+#    #+#             */
-/*   Updated: 2022/09/08 10:42:19 by sdi-lega         ###   ########.fr       */
+/*   Updated: 2022/09/14 12:02:45 by sdi-lega         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Philosophers.h"
-#include "program_inititation.h"
+#include "program_initiation.h"
 
 int	check_params(t_params *p)
 {

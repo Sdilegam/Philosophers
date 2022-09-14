@@ -6,7 +6,7 @@
 #    By: sdi-lega <sdi-lega@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/19 12:28:37 by sdi-lega          #+#    #+#              #
-#    Updated: 2022/09/08 10:44:26 by sdi-lega         ###   ########.fr        #
+#    Updated: 2022/09/14 13:39:25 by sdi-lega         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ C_SRCS				=	main_Philosophers\
 						actions\
 						death_handler\
 						clean_exit\
-						program_inititation\
+						program_initiation\
 						philosophers_initiation
 						
 SRCS				=	${addsuffix .c, ${C_SRCS}}
